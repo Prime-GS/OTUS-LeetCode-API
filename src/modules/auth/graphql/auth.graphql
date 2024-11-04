@@ -1,0 +1,41 @@
+type AuthResponse {
+  user: User!
+  token: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input RegistrationInput {
+  firstName: String!
+  lastName: String
+  middleName: String
+  email: String!
+  password: String!
+  cityId: Int
+  roles: [String]
+}
+
+input UpdateInput {
+  id: Int!
+  firstName: String
+  lastName: String
+  middleName: String
+  password: String
+  cityId: Int
+}
+
+type Query {
+  me: User!
+}
+
+type Mutation {
+  login(input: LoginInput!): AuthResponse!
+  registration(input: RegistrationInput!): AuthResponse!
+  updateMyProfile(input: UpdateInput!): User!
+  forgotPassword(email: String!): Boolean!
+  verifyToken(token: String!): Boolean!
+  resetPassword(token: String!, newPassword: String!): Boolean!
+}

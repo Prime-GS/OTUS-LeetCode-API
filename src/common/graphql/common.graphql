@@ -1,0 +1,19 @@
+directive @admin on OBJECT | FIELD_DEFINITION
+
+# scalar DateTime
+scalar Date
+
+scalar Upload
+
+input PaginationInput {
+  offset: Int
+  limit: Int
+}
+
+type Query {
+  test: String
+}
+
+input FilterInput {
+  query: String
+}
