@@ -1,15 +1,16 @@
-import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo'
+import { join } from 'path'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { join } from 'path'
 import { GraphQLUpload } from 'graphql-upload-minimal'
+import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo'
 
 import { AuthModule } from './modules/auth/auth.module'
 import { UsersModule } from './modules/users/users.module'
 import { StorageModule } from './modules/storage/storage.module'
 import { FileModule } from './modules/file/file.module'
+import { TagsModule } from './modules/tags/tags.module'
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { FileModule } from './modules/file/file.module'
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       autoLoadEntities: true,
     }),
+    TagsModule,
     UsersModule,
     AuthModule,
     StorageModule.register(),

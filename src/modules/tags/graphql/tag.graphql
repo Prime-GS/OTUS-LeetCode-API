@@ -1,0 +1,26 @@
+type Tag {
+  id: Int!
+  title: String!
+  description: String
+}
+
+type TagsResponse {
+  data: [Tag!]!
+  total: Int!
+}
+
+input TagInput {
+  title: String!
+  description: String
+}
+
+type Query {
+  tags(pagination: PaginationInput, filter: FilterInput): TagsResponse!
+  tag(id: Int!): Tag
+}
+
+type Mutation {
+  createTag(input: TagInput!): Tag!
+  updateTag(input: UpdateTagInput!): Tag!
+  deleteTag(id: Int!): Boolean!
+}
