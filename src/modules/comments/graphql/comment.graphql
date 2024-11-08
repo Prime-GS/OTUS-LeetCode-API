@@ -1,0 +1,33 @@
+type Comment {
+  id: Int!
+  title: String!
+  taskId: Int!
+  task: Task!
+  userId: Int
+  user: User
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type CommentsResponse {
+  data: [Comment!]!
+  total: Int!
+}
+
+input CommentInput {
+  id: Int
+  title: String!
+  taskId: Int!
+  userId: Int
+}
+
+type Query {
+  commentsByTask(taskId: Int!, pagination: PaginationInput, filter: FilterInput): CommentsResponse!
+  comment(id: Int!): Comment
+}
+
+type Mutation {
+  postComment(input: CommentInput!): Comment!
+  editComment(input: CommentInput!): Comment!
+  deleteComment(id: Int!): Boolean!
+}

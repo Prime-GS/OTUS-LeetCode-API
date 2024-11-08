@@ -23,6 +23,7 @@ type TasksResponse {
 }
 
 input TaskInput {
+  id: Int
   title: String!
   description: String!
   difficulty: String!

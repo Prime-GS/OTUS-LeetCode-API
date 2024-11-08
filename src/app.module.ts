@@ -12,6 +12,7 @@ import { StorageModule } from './modules/storage/storage.module'
 import { FileModule } from './modules/file/file.module'
 import { TagsModule } from './modules/tags/tags.module'
 import { TasksModule } from './modules/tasks/tasks.module'
+import { CommentsModule } from './modules/comments/comments.module'
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TasksModule } from './modules/tasks/tasks.module'
       autoLoadEntities: true,
     }),
     TasksModule,
+    CommentsModule,
     TagsModule,
     UsersModule,
     AuthModule,

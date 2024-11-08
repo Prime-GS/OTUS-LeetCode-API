@@ -12,6 +12,7 @@ type TagsResponse {
 }
 
 input TagInput {
+  id: Int
   title: String!
   description: String
 }
