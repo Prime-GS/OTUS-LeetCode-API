@@ -11,6 +11,7 @@ import { UsersModule } from './modules/users/users.module'
 import { StorageModule } from './modules/storage/storage.module'
 import { FileModule } from './modules/file/file.module'
 import { TagsModule } from './modules/tags/tags.module'
+import { TasksModule } from './modules/tasks/tasks.module'
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { TagsModule } from './modules/tags/tags.module'
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       autoLoadEntities: true,
     }),
+    TasksModule,
     TagsModule,
     UsersModule,
     AuthModule,

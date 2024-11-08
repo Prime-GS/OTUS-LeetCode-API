@@ -1,9 +1,9 @@
-import { ILike, Repository } from 'typeorm'
+import { In, ILike, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { BadRequestException, Injectable } from '@nestjs/common'
 
 import { Tag } from '../entities'
-import { TagDTO, UpdateTagDTO } from '../dto'
+import { TagDTO } from '../dto'
 import { IFilter, IListResponse, IPaginationInput } from '../../../common/interfaces'
 
 @Injectable()
@@ -14,7 +14,7 @@ export class TagsService {
   ) {}
 
   async find(pagination?: IPaginationInput, filter?: IFilter): Promise<IListResponse<Tag>> {
-    const [Tags, total] = await this.tagsRepository.findAndCount({
+    const [tags, total] = await this.tagsRepository.findAndCount({
       take: pagination?.limit ?? 50,
       skip: pagination?.offset,
       where: [{ title: ILike(`%${filter?.query ?? ''}%`) }, { description: ILike(`%${filter?.query ?? ''}%`) }],
@@ -22,37 +22,48 @@ export class TagsService {
     })
 
     return {
-      data: Tags,
+      data: tags,
       total,
     }
   }
 
   async findById(id: number) {
-    const Tag = await this.tagsRepository.findOneBy({ id })
-
-    return Tag
+    return await this.tagsRepository.findOneBy({ id })
   }
 
   async findByIdOrFail(id: number) {
     const Tag = await this.findById(id)
 
     if (!Tag) {
-      throw new BadRequestException('Пользователь не найден')
+      throw new BadRequestException('Тег не найден')
     }
 
     return Tag
   }
 
-  async createTag(input: TagDTO) {
-    const tagInstance = this.tagsRepository.create({
-      title: input.title,
-      description: input.description ?? null,
+  async findByIdsArr(ids: number[]) {
+    const tags = this.tagsRepository.find({
+      where: {
+        id: In(ids),
+      },
     })
-
-    return this.tagsRepository.save(tagInstance)
+    return tags
   }
 
-  async updateTag(input: UpdateTagDTO) {
+  async createTag(input: TagDTO) {
+    return this.tagsRepository.save(
+      this.tagsRepository.create({
+        title: input.title,
+        description: input.description ?? null,
+      }),
+    )
+  }
+
+  async updateTag(input: TagDTO) {
+    if (!input.id) {
+      throw new BadRequestException('Тег не найден')
+    }
+
     const tag = await this.findByIdOrFail(input.id)
 
     tag.title = input.title ?? tag.title

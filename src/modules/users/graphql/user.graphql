@@ -6,6 +6,8 @@ type User {
   fullName: String!
   email: String!
   roles: [String]
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type UsersResponse {

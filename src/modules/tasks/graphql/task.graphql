@@ -1,0 +1,43 @@
+type Task {
+  id: Int!
+  title: String!
+  description: String!
+  difficulty: String!
+  tags: [Tag!]
+  input: String
+  result: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+enum TaskDifficulty {
+  EASY
+  MEDIUM
+  HARD
+  SENIOR
+}
+
+type TasksResponse {
+  data: [Task!]!
+  total: Int!
+}
+
+input TaskInput {
+  title: String!
+  description: String!
+  difficulty: String!
+  tagsIds: [Int!]
+  input: String
+  result: String!
+}
+
+type Query {
+  tasks(pagination: PaginationInput, filter: FilterInput): TasksResponse!
+  task(id: Int!): Task
+}
+
+type Mutation {
+  createTask(input: TaskInput!): Task!
+  updateTask(input: TaskInput!): Task!
+  deleteTask(id: Int!): Boolean!
+}

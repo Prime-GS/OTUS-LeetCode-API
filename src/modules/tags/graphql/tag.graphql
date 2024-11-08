@@ -2,6 +2,8 @@ type Tag {
   id: Int!
   title: String!
   description: String
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type TagsResponse {
@@ -21,6 +23,6 @@ type Query {
 
 type Mutation {
   createTag(input: TagInput!): Tag!
-  updateTag(input: UpdateTagInput!): Tag!
+  updateTag(input: TagInput!): Tag!
   deleteTag(id: Int!): Boolean!
 }
