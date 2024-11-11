@@ -1,35 +1,87 @@
-## OTUS LeetCode API
+# Простое API на NestJS с использованием GraphQL
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Этот проект является простым примером API, построенного с использованием NestJS и GraphQL. В нем реализована базовая структура для работы с GraphQL-запросами и мутациями.
 
-## Installation
+## Структура проекта
 
-```bash
-$ yarn
+- `src/`
+  - `app.module.ts` — главный модуль приложения.
+  - `*name*/`
+    - `*name*.module.ts` — модуль пользователей.
+    - `*name*.service.ts` — сервис для работы с базой данных.
+    - `*name*.resolver.ts` — резолвер GraphQL для обработки запросов и мутаций.
+    - `*name*.entity.ts` — сущность.
+
+## Установка и запуск
+
+1. Склонируйте репозиторий с ветки development:
+
+   ```bash
+   git clone https://github.com/Prime-GS/OTUS-LeetCode-API.git
+   cd OTUS-LeetCode-API
+   ```
+
+2. Установите зависимости:
+
+   ```bash
+   yarn
+   ```
+
+3. Запустите приложение в режиме разработки:
+
+   ```bash
+   yarn start:dev
+   ```
+
+4. Перейдите в браузер и откройте [http://localhost:8080/graphql](http://localhost:8080/graphql), чтобы открыть GraphQL Playground, где можно выполнять запросы и мутации.
+
+## Пример использования
+
+В этом примере API предоставляет возможности для управления данными. 
+
+### Пример запроса
+
+Вы можете выполнить GraphQL-запрос, чтобы получить список всех пользователей:
+
+```graphql
+query {
+  users {
+    ...UserFragment
+  }
+}
 ```
 
-## Running the app
+### Пример мутации
 
-```bash
-# development
-$ yarn start
+Для добавления нового пользователя выполните следующую мутацию:
 
-# watch mode
-$ yarn dev
-
-# production mode
-$ yarn prod
+```graphql
+mutation CreateUser($input: UserInput!) {
+  createUser(input: $input) {
+    ...UserFragment
+  }
+}
 ```
 
-## Test
+## Файлы и их назначение
 
-```bash
-# unit tests
-$ yarn test
+- `*name*.module.ts` — определяет модуль для работы с пользователями, включая резолвер и сервис.
+- `*name*.service.ts` — содержит логику для управления данными пользователей, такие как создание и получение списка пользователей.
+- `*name*.resolver.ts` — резолвер, который обрабатывает GraphQL-запросы и мутации для работы с пользователями.
+- `*name*.entity.ts` — определяет сущность пользователя, используемую в базе данных и в GraphQL.
 
-# e2e tests
-$ yarn test:e2e
+## Технологии и библиотеки
 
-# test coverage
-$ yarn test:cov
-```
+- **NestJS** — фреймворк для построения серверных приложений.
+- **GraphQL** — язык запросов и runtime для API.
+- **TypeScript** — язык программирования, используемый для типизации и улучшения читаемости кода.
+
+## Команды
+
+- `yarn start` — запуск приложения в режиме production.
+- `yarn start:dev` — запуск приложения в режиме разработки с автоматической перезагрузкой при изменении файлов.
+- `yarn test` — запуск тестов. // Пока не настроенно
+
+## Дополнительная информация
+
+Для дополнительной информации по работе с NestJS и GraphQL, посетите [официальную документацию NestJS](https://docs.nestjs.com/graphql/quick-start) и [GraphQL](https://graphql.org/learn/).
