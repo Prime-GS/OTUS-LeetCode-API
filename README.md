@@ -30,7 +30,7 @@
 3. Запустите приложение в режиме разработки:
 
    ```bash
-   yarn start:dev
+   yarn dev
    ```
 
 4. Перейдите в браузер и откройте [http://localhost:8080/graphql](http://localhost:8080/graphql), чтобы открыть GraphQL Playground, где можно выполнять запросы и мутации.
@@ -39,27 +39,150 @@
 
 В этом примере API предоставляет возможности для управления данными. 
 
-### Пример запроса
+### Все запросы
 
-Вы можете выполнить GraphQL-запрос, чтобы получить список всех пользователей:
+Ниже будет приведенна структура, которую можно вставить в Graphql страницу запросов и использовать данные из них:
 
 ```graphql
-query {
-  users {
+fragment UserFragment on User {
+  id
+  firstName
+  lastName
+  middleName
+  fullName
+  email
+  roles
+  createdAt
+  updatedAt
+}
+
+fragment TagFragment on Tag {
+  id
+  title
+  description
+  createdAt
+  updatedAt
+}
+
+fragment CommentFragment on Comment {
+  id
+  title
+  taskId
+  task {
+    ...TaskFragment
+  }
+  userId
+  user {
     ...UserFragment
+  }
+  createdAt
+  updatedAt
+}
+
+fragment TaskFragment on Task {
+  id
+  title
+  description
+  difficulty
+  tags {
+    ...TagFragment
+  }
+  input
+  result
+  createdAt
+  updatedAt
+}
+
+query Users {
+  users {
+    data {
+    	...UserFragment
+  	}
+    total
+  }
+}
+
+query Tags {
+  tags {
+    data {
+    	...TagFragment
+  	}
+    total
+  }
+}
+
+query Tasks {
+  tasks {
+    data {
+	    ...TaskFragment
+  	}
+    total
+  }
+}
+
+query Comments($commentTaskId: Int!) {
+  commentsByTask(taskId: $commentTaskId) {
+    data {
+	    ...CommentFragment
+  	}
+    total
+  }
+}
+
+mutation Login($login: LoginInput!) {
+  login(input: $login) {
+    user {
+      ...UserFragment
+    }
+    token
+  }
+}
+
+mutation CreateTag($tag: TagInput!) {
+  createTag(input: $tag) {
+    ...TagFragment
+  }
+}
+
+mutation CreateTask($task: TaskInput!) {
+  createTask(input: $task) {
+   	...TaskFragment
+  }
+}
+
+mutation PostComment($comment: CommentInput!) {
+  postComment(input: $comment) {
+   	...CommentFragment
   }
 }
 ```
 
-### Пример мутации
+### Query Variebles
 
-Для добавления нового пользователя выполните следующую мутацию:
+Здесь будут примеры body для mutation запросов для создания данных:
 
-```graphql
-mutation CreateUser($input: UserInput!) {
-  createUser(input: $input) {
-    ...UserFragment
-  }
+```json
+{
+  "login": {
+    "email": "admin@gmail.com",
+    "password": "1"
+  },
+  "tag": {
+    "title": "Java",
+    "description": "java tasks"
+  },
+  "task":  {
+    "title": "JavaScript Array compiler",
+    "description": "Create array compiler",
+    "difficulty": "EASY" ,
+    "tagsIds": [1, 3],
+    "result": "[compiled]"
+  },
+  "comment": {
+    "title": "This Task is nice",
+    "taskId": 5
+  },
+  "commentTaskId": 5
 }
 ```
 
@@ -79,7 +202,9 @@ mutation CreateUser($input: UserInput!) {
 ## Команды
 
 - `yarn start` — запуск приложения в режиме production.
-- `yarn start:dev` — запуск приложения в режиме разработки с автоматической перезагрузкой при изменении файлов.
+- `yarn dev` — запуск приложения в режиме разработки с автоматической перезагрузкой при изменении файлов.
+- `yarn build` — запуск сборки проекта.
+- `yarn prod` — запуск собраной версии проекта.
 - `yarn test` — запуск тестов. // Пока не настроенно
 
 ## Дополнительная информация
