@@ -36,7 +36,7 @@ jobs:
           echo "TEMPLATES_DIR=${{ secrets.TEMPLATES_DIR }}" >> .env
 
       - name: Build and Start Docker Compose
-        run: docker-compose up --build
+        run: docker-compose up --build -d
 
       - name: Stop Docker Compose
         if: always()
