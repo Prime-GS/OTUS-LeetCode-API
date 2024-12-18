@@ -1,0 +1,43 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
+
+      - name: Set up environment variables
+        run: |
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}" >> .env
+          echo "ADMIN_EMAIL=${{ secrets.ADMIN_EMAIL }}" >> .env
+          echo "ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }}" >> .env
+          echo "STORAGE_ROOT=${{ secrets.STORAGE_ROOT }}" >> .env
+          echo "STORAGE_URL=${{ secrets.STORAGE_URL }}" >> .env
+          echo "TEMPLATES_DIR=${{ secrets.TEMPLATES_DIR }}" >> .env
+
+      - name: Build and Start Docker Compose
+        run: docker-compose up --build
+
+      - name: Stop Docker Compose
+        if: always()
+        run: docker-compose down
